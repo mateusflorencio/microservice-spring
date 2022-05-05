@@ -7,6 +7,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.florencio.user.back.end.dto.UserDTO;
@@ -14,9 +18,42 @@ import com.florencio.user.back.end.dto.UserDTO;
 @RestController
 public class UserController {
 
-	@GetMapping("/")
+	@RequestMapping(method = RequestMethod.GET)
 	public String getMessage() {
 		return "Spring boot is working !";
+	}
+
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public List<UserDTO> getUsers() {
+		return usuarios;
+	}
+
+	@RequestMapping(value = "users/{cpf}", method = RequestMethod.GET)
+	public UserDTO getUsersFiltro(@PathVariable String cpf) {
+		for (UserDTO userFilter : usuarios) {
+			if (userFilter.getCpf().equals(cpf)) {
+				return userFilter;
+			}
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "newUsers", method = RequestMethod.POST)
+	UserDTO inserir(@RequestBody UserDTO userDTO) {
+		userDTO.setDataCadastro(new Date());
+		usuarios.add(userDTO);
+		return userDTO;
+	}
+
+	@RequestMapping(value= "users/{cpf}", method = RequestMethod.DELETE)
+	public boolean remover (@PathVariable String cpf) {
+		for (UserDTO userFilter: usuarios) {
+			if( userFilter.getCpf().equals(cpf)) {
+				usuarios.remove(userFilter);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static List<UserDTO> usuarios = new ArrayList<UserDTO>();
@@ -52,8 +89,4 @@ public class UserController {
 		usuarios.add(userDTO3);
 	}
 
-	@GetMapping("/users")
-	public List<UserDTO> getUsers() {
-		return usuarios;
-	}
 }
