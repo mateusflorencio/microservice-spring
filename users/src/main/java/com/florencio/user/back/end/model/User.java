@@ -1,17 +1,34 @@
-package com.florencio.user.back.end.dto;
+package com.florencio.user.back.end.model;
 
 import java.util.Date;
 
-import com.florencio.user.back.end.model.User;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public class UserDTO {
+import com.florencio.user.back.end.dto.UserDTO;
 
+@Entity
+public class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	private String nome;
 	private String cpf;
 	private String endereco;
 	private String email;
 	private String telefone;
 	private Date dataCadastro;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
@@ -61,17 +78,17 @@ public class UserDTO {
 		this.dataCadastro = dataCadastro;
 	}
 	
+	public static User convert(UserDTO userDTO) {
+		User user = new User();
+		user.setNome(userDTO.getNome());
+		user.setEndereco(userDTO.getEndereco());
+		user.setCpf(userDTO.getCpf());
+		user.setEmail(userDTO.getEmail());
+		user.setTelefone(userDTO.getTelefone());
+		user.setDataCadastro(userDTO.getDataCadastro());
 
-	public static UserDTO convert(User user) {
-		UserDTO userDTO = new UserDTO();
-		userDTO.setNome(user.getNome());
-		userDTO.setEndereco(user.getEndereco());
-		userDTO.setCpf(user.getCpf());
-		userDTO.setEmail(user.getEmail());
-		userDTO.setTelefone(user.getTelefone());
-		userDTO.setDataCadastro(user.getDataCadastro());
-
-		return userDTO;
+		return user;
 	}
+
 
 }
