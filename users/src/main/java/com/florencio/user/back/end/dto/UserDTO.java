@@ -1,4 +1,4 @@
-package dto;
+package com.florencio.user.back.end.dto;
 
 import java.util.Date;
 
