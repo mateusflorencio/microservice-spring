@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.florencio.productapi.dto.CategoryDTO;
+import com.florencio.productapi.dto.ProductDTO;
 
 @Entity(name = "product")
 public class Product {
@@ -72,11 +72,17 @@ public class Product {
         this.category = category;
     }
 
-    public static Category convert(CategoryDTO categoryDTO) {
-        Category category = new Category();
-        category.setId(categoryDTO.getId());
-        category.setNome(categoryDTO.getNome());
-        return category;
+    public static Product convert(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setNome(product.getNome());
+        product.setDescricao(product.getDescricao());
+        product.setPreco(product.getPreco());
+        product.setProductIdentifier(productDTO.getProductIdentifier());
+        if (product.getCategory() != null) {
+            product.setCategory(Category.convert(productDTO.getCategoryDTO()));
+
+        }
+        return product;
     }
 
 }
