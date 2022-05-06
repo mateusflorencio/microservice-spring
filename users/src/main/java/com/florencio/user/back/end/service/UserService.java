@@ -53,7 +53,7 @@ public class UserService {
 	}
 
 	public List<UserDTO> queryByName(String name) {
-		List<User> usuarios = userRepository.queryNomeLike(name);
+		List<User> usuarios = userRepository.findName(name);
 		return usuarios.stream().map(UserDTO::convert).collect(Collectors.toList());
 	}
 
